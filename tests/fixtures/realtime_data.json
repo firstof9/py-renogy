@@ -1,0 +1,12 @@
+{
+    "data": {
+        "averageTemperature": -3,
+        "presentCapacity": 54.518002,
+        "presentVolts": 13.0,
+        "maximumCapacity": 99.505997,
+        "sku": "RBT100LFP12SH-G1",
+        "batteryLevel": 54.784637,
+        "presentAmps": 0.0,
+        "heatingModeStatus": 0
+    }
+}

@@ -1,0 +1,10 @@
+-r requirements.txt
+pre-commit
+pytest
+pytest-cov
+pytest-timeout
+pytest-asyncio
+requests_mock
+aiohttp
+aioresponses
+tox
