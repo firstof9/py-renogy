@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import datetime
+import time
 import json
 import logging
 from typing import Any
@@ -102,7 +102,7 @@ class Renogy:
     async def get_devices(self) -> dict:
         """Provide list of devices associated with account."""
         processed_devices = {}
-        timestamp = datetime.datetime.now()
+        timestamp = time.time()
         signature = calc_sign(DEVICE_LIST, "", timestamp, self._key)
         headers = {
             "Access-Key": self._access_key,
@@ -151,7 +151,7 @@ class Renogy:
 
     async def get_realtime_data(self, device_id: str) -> dict:
         """Provide reatime data of specified device_id."""
-        timestamp = datetime.datetime.now()
+        timestamp = time.time()
         path = f"/device/data/latest/{device_id}"
         signature = calc_sign(path, "", timestamp, self._key)
         headers = {
