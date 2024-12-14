@@ -104,7 +104,7 @@ class Renogy:
         """Provide list of devices associated with account."""
         processed_devices = {}
         timestamp = int(time.time() * 1000)
-        params = {}
+        params: dict[Any, Any] = {}
         signature = calc_sign(DEVICE_LIST, urlencode(params), timestamp, self._key)
         headers = {
             "Access-Key": self._access_key,
@@ -155,7 +155,7 @@ class Renogy:
         """Provide reatime data of specified device_id."""
         timestamp = int(time.time() * 1000)
         path = f"/device/data/latest/{device_id}"
-        params = {}
+        params: dict[Any, Any] = {}
         signature = calc_sign(path, urlencode(params), timestamp, self._key)
         headers = {
             "Access-Key": self._access_key,
