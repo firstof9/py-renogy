@@ -6,6 +6,7 @@ import time
 import json
 import logging
 from typing import Any
+from urllib.parse import urlencode
 
 import aiohttp  # type: ignore
 from aiohttp.client_exceptions import ContentTypeError, ServerTimeoutError
@@ -102,12 +103,13 @@ class Renogy:
     async def get_devices(self) -> dict:
         """Provide list of devices associated with account."""
         processed_devices = {}
-        timestamp = str(int(time.time()))
-        signature = calc_sign(DEVICE_LIST, "", timestamp, self._key)
+        timestamp = int(time.time() * 1000)
+        params = {}
+        signature = calc_sign(DEVICE_LIST, urlencode(params), timestamp, self._key)
         headers = {
             "Access-Key": self._access_key,
             "Signature": signature,
-            "Timestamp": timestamp,
+            "Timestamp": str(timestamp),
         }
         url = BASE_URL + DEVICE_LIST
         response = await self.process_request(url, headers)
@@ -151,13 +153,14 @@ class Renogy:
 
     async def get_realtime_data(self, device_id: str) -> dict:
         """Provide reatime data of specified device_id."""
-        timestamp = str(int(time.time()))
+        timestamp = int(time.time() * 1000)
         path = f"/device/data/latest/{device_id}"
-        signature = calc_sign(path, "", timestamp, self._key)
+        params = {}
+        signature = calc_sign(path, urlencode(params), timestamp, self._key)
         headers = {
             "Access-Key": self._access_key,
             "Signature": signature,
-            "Timestamp": timestamp,
+            "Timestamp": str(timestamp),
         }
         url = BASE_URL + path
         response = await self.process_request(url, headers)
