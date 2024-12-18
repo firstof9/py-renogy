@@ -12,7 +12,7 @@ import aiohttp  # type: ignore
 from aiohttp.client_exceptions import ContentTypeError, ServerTimeoutError
 
 from .auth import calc_sign
-from .exceptions import NotAuthorized, RateLimit, UrlNotFound
+from .exceptions import NoDevices, NotAuthorized, RateLimit, UrlNotFound
 
 CONNECTION_TYPE = {
     "zigbee": "Zigbee",
@@ -115,6 +115,10 @@ class Renogy:
         response = await self.process_request(url, headers)
 
         _LOGGER.debug("Response: %s", response)
+
+        if len(response) == 0:
+            _LOGGER.info("Renogy API returned no devices.")
+            raise NoDevices
 
         if "deviceId" in response[0].keys():
             # Main 'hub' data
