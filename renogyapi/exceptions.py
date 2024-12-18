@@ -19,3 +19,6 @@ class RateLimit(Exception):
 
 class InvalidCall(Exception):
     """Exception for missing device_id."""
+
+class NoDevices(Exception):
+    """Exception for missing device_id."""
