@@ -27,6 +27,19 @@ CONNECTION_TYPE = {
     "": "Hub",
 }
 
+SUBDEVICE_CONNECTION_TYPE = {
+    "zigbee": "Zigbee",
+    "bt": "Bluetooth",
+    "rvc": "RVC",
+    "rs485": "RS485",
+    "rs232": "RS232",
+    "ethernet": "Ethernet",
+    "wifi": "Wifi",
+    "can": "CANBUS",
+    "mesh": "Mesh",
+    "": "Unknown",
+}
+
 BASE_URL = "https://openapi.renogy.com"
 DEVICE_LIST = "/device/list"
 
@@ -146,7 +159,9 @@ class Renogy:
                         data["mac"] = device["mac"]
                         data["firmware"] = device["firmware"]
                         data["status"] = device["onlineStatus"]
-                        data["connection"] = CONNECTION_TYPE[device["connectType"]]
+                        data["connection"] = SUBDEVICE_CONNECTION_TYPE[
+                            device["connectType"]
+                        ]
                         data["serial"] = device["sn"]
                         data["model"] = device["sku"]
                         data["data"] = await self.get_realtime_data(data["deviceId"])
