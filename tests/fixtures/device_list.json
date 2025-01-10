@@ -46,7 +46,19 @@
                 "onlineStatus": "online",
                 "connectType": "rs485",
                 "addTime": 1733944293000
-            }
+            },
+            {
+                "deviceId": "12345678904", 
+                "sn": "", 
+                "sku": "RBT100LFP12S-G1", 
+                "name": "Battery 1", 
+                "category": "Battery", 
+                "mac": "30", 
+                "firmware": "", 
+                "onlineStatus": "online", 
+                "connectType": "", 
+                "addTime": 1721320524000
+            }            
         ]
     }
 ]
