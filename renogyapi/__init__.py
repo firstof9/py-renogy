@@ -187,4 +187,17 @@ class Renogy:
         if "data" not in response.keys():
             _LOGGER.warning("No data in API response.")
             return {}
+
+        path = f"/device/datamap/{device_id}"
+        url = BASE_URL + path
+        datamap = await self.process_request(url, headers)
+        _LOGGER.debug("Datamap: %s", datamap)
+        for reading in datamap:
+            key = reading["name"]
+            if key in response["data"]:
+                response["data"][key] = (
+                    response["data"][key],
+                    reading["unit"].replace("°", ""),
+                )
+
         return response["data"]
