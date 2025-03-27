@@ -190,6 +190,12 @@ class Renogy:
 
         if response["data"] != {}:
             path = f"/device/datamap/{device_id}"
+            signature = calc_sign(path, urlencode(params), timestamp, self._key)
+            headers = {
+                "Access-Key": self._access_key,
+                "Signature": signature,
+                "Timestamp": str(timestamp),
+            }
             url = BASE_URL + path
             datamap = await self.process_request(url, headers)
             _LOGGER.debug("Datamap: %s", datamap)
