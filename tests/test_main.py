@@ -64,7 +64,7 @@ async def test_get_devices(mock_aioclient, caplog):
     data = await handler.get_devices()
     assert data["12345678903"]["data"]["batteryLevel"] == (54.784637, "%")
     assert data["12345678903"]["data"]["heatingModeStatus"] == (0, "")
-    assert data["12345678903"]["data"]["averageTemperature"] == (-3, "C")
+    assert data["12345678903"]["data"]["averageTemperature"] == (-3, "°C")
     assert data["12345678904"]["connection"] == "Unknown"
 
 
