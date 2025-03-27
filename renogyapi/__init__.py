@@ -204,7 +204,7 @@ class Renogy:
                 if key in response["data"]:
                     response["data"][key] = (
                         response["data"][key],
-                        reading["unit"].replace("°", ""),
+                        reading["unit"],
                     )
 
         return response["data"]
