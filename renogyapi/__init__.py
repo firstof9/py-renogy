@@ -132,7 +132,7 @@ class Renogy:
         if len(responses) == 0:
             _LOGGER.info("Renogy API returned no devices.")
             raise NoDevices
-        
+
         for response in responses:
             if "deviceId" in response.keys():
                 # Main 'hub' data
@@ -166,7 +166,9 @@ class Renogy:
                             ]
                             data["serial"] = device["sn"]
                             data["model"] = device["sku"]
-                            data["data"] = await self.get_realtime_data(data["deviceId"])
+                            data["data"] = await self.get_realtime_data(
+                                data["deviceId"]
+                            )
                             processed_devices[data["deviceId"]] = data
 
         self._device_list = processed_devices

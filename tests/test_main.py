@@ -95,7 +95,7 @@ async def test_get_devices(mock_aioclient, caplog):
         status=200,
         body=load_fixture("datamap.json"),
         repeat=True,
-    )    
+    )
     handler = renogyapi.Renogy(secret_key="fakeSecretKey", access_key="FakeAccessKey")
     data = await handler.get_devices()
     assert data["12345678903"]["data"]["batteryLevel"] == (54.784637, "%")
