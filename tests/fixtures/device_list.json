@@ -60,5 +60,67 @@
                 "addTime": 1721320524000
             }            
         ]
-    }
+    },
+    {
+        "deviceId": "12345678905",
+        "sn": "TOTALLYFAKESN1",
+        "sku": "RSHGWSN-W02W-G1",
+        "name": "Renogy ONE Core",
+        "category": "Renogy ONE Core",
+        "mac": "DE:AD:BE:EF:FE:EF",
+        "firmware": "V1.1.157",
+        "onlineStatus": "online",
+        "connectType": "",
+        "addTime": 1733682329000,
+        "sublist": [
+            {
+                "deviceId": "12345678906",
+                "sn": "",
+                "sku": "RINVTPGH110111S",
+                "name": "Inverter",
+                "category": "Inverter",
+                "mac": "32",
+                "firmware": "0100.0102.0202",
+                "onlineStatus": "online",
+                "connectType": "rs485",
+                "addTime": 1733682329000
+            },
+            {
+                "deviceId": "12345678907",
+                "sn": "",
+                "sku": "RNG-CTRL-RVR40",
+                "name": "RNG-CTRL-RVR40",
+                "category": "Controller",
+                "mac": "F0:F8:F2:5D:5D:8716",
+                "firmware": "",
+                "onlineStatus": "online",
+                "connectType": "bt",
+                "addTime": 1733944178000
+            },
+            {
+                "deviceId": "12345678908",
+                "sn": "",
+                "sku": "RBT100LFP12SH-G1",
+                "name": "RBT100LFP12SH-G1",
+                "category": "Battery",
+                "mac": "48",
+                "firmware": "",
+                "onlineStatus": "online",
+                "connectType": "rs485",
+                "addTime": 1733944293000
+            },
+            {
+                "deviceId": "12345678909", 
+                "sn": "", 
+                "sku": "RBT100LFP12S-G1", 
+                "name": "Battery 1", 
+                "category": "Battery", 
+                "mac": "30", 
+                "firmware": "", 
+                "onlineStatus": "online", 
+                "connectType": "", 
+                "addTime": 1721320524000
+            }            
+        ]
+    }    
 ]

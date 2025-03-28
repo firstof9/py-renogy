@@ -125,47 +125,49 @@ class Renogy:
             "Timestamp": str(timestamp),
         }
         url = BASE_URL + DEVICE_LIST
-        response = await self.process_request(url, headers)
+        responses = await self.process_request(url, headers)
 
-        _LOGGER.debug("Response: %s", response)
+        _LOGGER.debug("Response: %s", responses)
 
-        if len(response) == 0:
+        if len(responses) == 0:
             _LOGGER.info("Renogy API returned no devices.")
             raise NoDevices
+        
+        for response in responses:
+            if "deviceId" in response.keys():
+                # Main 'hub' data
+                data = {}
+                data["deviceId"] = response["deviceId"]
+                data["name"] = response["name"]
+                data["mac"] = response["mac"]
+                data["firmware"] = response["firmware"]
+                data["status"] = response["onlineStatus"]
+                data["connection"] = CONNECTION_TYPE[response["connectType"]]
+                data["serial"] = response["sn"]
+                data["model"] = response["sku"]
+                data["data"] = await self.get_realtime_data(data["deviceId"])
 
-        if "deviceId" in response[0].keys():
-            # Main 'hub' data
-            data = {}
-            data["deviceId"] = response[0]["deviceId"]
-            data["name"] = response[0]["name"]
-            data["mac"] = response[0]["mac"]
-            data["firmware"] = response[0]["firmware"]
-            data["status"] = response[0]["onlineStatus"]
-            data["connection"] = CONNECTION_TYPE[response[0]["connectType"]]
-            data["serial"] = response[0]["sn"]
-            data["model"] = response[0]["sku"]
-            data["data"] = await self.get_realtime_data(data["deviceId"])
+                processed_devices[data["deviceId"]] = data
 
-            processed_devices[data["deviceId"]] = data
-
-            if "sublist" in response[0].keys():
-                # Sub devices
-                if len(response[0]["sublist"][0]) > 0:
-                    for device in response[0]["sublist"]:
-                        _LOGGER.debug("Device: %s", device)
-                        data = {}
-                        data["deviceId"] = device["deviceId"]
-                        data["name"] = device["name"]
-                        data["mac"] = device["mac"]
-                        data["firmware"] = device["firmware"]
-                        data["status"] = device["onlineStatus"]
-                        data["connection"] = SUBDEVICE_CONNECTION_TYPE[
-                            device["connectType"]
-                        ]
-                        data["serial"] = device["sn"]
-                        data["model"] = device["sku"]
-                        data["data"] = await self.get_realtime_data(data["deviceId"])
-                        processed_devices[data["deviceId"]] = data
+                if "sublist" in response.keys():
+                    # Sub devices
+                    if len(response["sublist"][0]) > 0:
+                        for device in response["sublist"]:
+                            _LOGGER.debug("Device: %s", device)
+                            data = {}
+                            data["parent"] = response["deviceId"]
+                            data["deviceId"] = device["deviceId"]
+                            data["name"] = device["name"]
+                            data["mac"] = device["mac"]
+                            data["firmware"] = device["firmware"]
+                            data["status"] = device["onlineStatus"]
+                            data["connection"] = SUBDEVICE_CONNECTION_TYPE[
+                                device["connectType"]
+                            ]
+                            data["serial"] = device["sn"]
+                            data["model"] = device["sku"]
+                            data["data"] = await self.get_realtime_data(data["deviceId"])
+                            processed_devices[data["deviceId"]] = data
 
         self._device_list = processed_devices
         return self._device_list
