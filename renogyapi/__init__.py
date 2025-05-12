@@ -142,7 +142,9 @@ class Renogy:
                 data["mac"] = response["mac"]
                 data["firmware"] = response["firmware"]
                 data["status"] = response["onlineStatus"]
-                data["connection"] = CONNECTION_TYPE[response["connectType"]]
+                data["connection"] = CONNECTION_TYPE.get(
+                    response["connectType"], "Unknown"
+                )
                 data["serial"] = response["sn"]
                 data["model"] = response["sku"]
                 data["data"] = await self.get_realtime_data(data["deviceId"])
@@ -161,9 +163,9 @@ class Renogy:
                             data["mac"] = device["mac"]
                             data["firmware"] = device["firmware"]
                             data["status"] = device["onlineStatus"]
-                            data["connection"] = SUBDEVICE_CONNECTION_TYPE[
-                                device["connectType"]
-                            ]
+                            data["connection"] = SUBDEVICE_CONNECTION_TYPE.get(
+                                device["connectType"], "Unknown"
+                            )
                             data["serial"] = device["sn"]
                             data["model"] = device["sku"]
                             data["data"] = await self.get_realtime_data(
