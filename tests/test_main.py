@@ -147,3 +147,47 @@ async def test_get_devices_exception(mock_aioclient, caplog):
     handler = renogyapi.Renogy(secret_key="fakeSecretKey", access_key="FakeAccessKey")
     with pytest.raises(NoDevices):
         await handler.get_devices()
+
+
+async def test_get_devices_no_sublist(mock_aioclient, caplog):
+    """Test get_devices function."""
+    mock_aioclient.get(
+        BASE_URL + DEVICE_LIST,
+        status=200,
+        body=load_fixture("device_list_error.json"),
+        repeat=True,
+    )
+    mock_aioclient.get(
+        f"{BASE_URL}/device/data/latest/1234567890",
+        status=200,
+        body="",
+        repeat=True,
+    )
+    mock_aioclient.get(
+        f"{BASE_URL}/device/data/latest/12345678901",
+        status=200,
+        body="",
+        repeat=True,
+    )
+    mock_aioclient.get(
+        f"{BASE_URL}/device/data/latest/12345678902",
+        status=200,
+        body="",
+        repeat=True,
+    )
+    mock_aioclient.get(
+        f"{BASE_URL}/device/data/latest/12345678903",
+        status=200,
+        body="",
+        repeat=True,
+    )
+    mock_aioclient.get(
+        f"{BASE_URL}/device/data/latest/12345678904",
+        status=200,
+        body="",
+        repeat=True,
+    )
+    handler = renogyapi.Renogy(secret_key="fakeSecretKey", access_key="FakeAccessKey")
+    with caplog.at_level(logging.DEBUG):
+        await handler.get_devices()
+    assert "No subdevices found." in caplog.text

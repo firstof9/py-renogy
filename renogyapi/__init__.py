@@ -152,9 +152,14 @@ class Renogy:
                 processed_devices[data["deviceId"]] = data
 
                 if "sublist" in response.keys():
-                    # Sub devices
-                    if len(response["sublist"][0]) > 0:
-                        for device in response["sublist"]:
+                    subdevices = response["sublist"]
+                    try:
+                        length = len(subdevices[0])
+                    except (TypeError, IndexError):
+                        length = 0
+                        _LOGGER.warning("No subdevices found.")
+                    if length > 0:
+                        for device in subdevices:
                             _LOGGER.debug("Device: %s", device)
                             data = {}
                             data["parent"] = response["deviceId"]
