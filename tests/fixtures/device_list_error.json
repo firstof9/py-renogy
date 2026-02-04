@@ -1,0 +1,15 @@
+[
+    {
+        "deviceId": "1234567890",
+        "sn": "TOTALLYFAKESN",
+        "sku": "RSHGWSN-W02W-G1",
+        "name": "Renogy ONE Core",
+        "category": "Renogy ONE Core",
+        "mac": "DE:AD:BE:EF:FE:ED",
+        "firmware": "V1.1.157",
+        "onlineStatus": "online",
+        "connectType": "",
+        "addTime": 1733682329000,
+        "sublist": []
+    }
+]
