@@ -57,10 +57,12 @@ class Renogy:
         self,
         secret_key: str,
         access_key: str,
+        session: aiohttp.ClientSession | None = None,
     ) -> None:
         """Initialize."""
         self._key = secret_key
         self._access_key = access_key
+        self._session = session
         self._device_list: dict[Any, Any] = {}
 
     async def process_request(
@@ -69,49 +71,61 @@ class Renogy:
         headers: dict,
     ) -> dict[Any, Any]:
         """Process API requests."""
-        async with aiohttp.ClientSession(headers=headers) as session:
-            _LOGGER.debug("Request URL: %s", url)
-            timeout = aiohttp.ClientTimeout(total=90)
-            try:
-                async with session.get(url, timeout=timeout) as response:
-                    message: Any = {}
-                    try:
-                        message = await response.text()
-                    except UnicodeDecodeError:
-                        _LOGGER.debug("Decoding error.")
-                        data = await response.read()
-                        message = data.decode(errors="replace")
+        if self._session is not None:
+            return await self._request(self._session, url, headers)
 
-                    try:
-                        message = json.loads(message)
-                    except ValueError:
-                        _LOGGER.warning("Non-JSON response: %s", message)
+        async with aiohttp.ClientSession() as session:
+            return await self._request(session, url, headers)
+
+    async def _request(
+        self,
+        session: aiohttp.ClientSession,
+        url: str,
+        headers: dict,
+    ) -> dict[Any, Any]:
+        """Process API requests."""
+        _LOGGER.debug("Request URL: %s", url)
+        timeout = aiohttp.ClientTimeout(total=90)
+        try:
+            async with session.get(url, headers=headers, timeout=timeout) as response:
+                message: Any = {}
+                try:
+                    message = await response.text()
+                except UnicodeDecodeError:
+                    _LOGGER.debug("Decoding error.")
+                    data = await response.read()
+                    message = data.decode(errors="replace")
+
+                try:
+                    message = json.loads(message)
+                except ValueError:
+                    _LOGGER.warning("Non-JSON response: %s", message)
+                    message = {"error": message}
+
+                if response.status == 404:
+                    raise UrlNotFound
+                if response.status == 401:
+                    raise NotAuthorized
+                if response.status == 429:
+                    raise RateLimit
+                if response.status != 200:
+                    _LOGGER.error(  # pylint: disable-next=line-too-long
+                        "An error reteiving data from the server, code: %s\nmessage: %s",  # noqa: E501
+                        response.status,
+                        message,
+                    )
+                    if not isinstance(message, dict) or "error" not in message:
                         message = {"error": message}
+                return message
 
-                    if response.status == 404:
-                        raise UrlNotFound
-                    if response.status == 401:
-                        raise NotAuthorized
-                    if response.status == 429:
-                        raise RateLimit
-                    if response.status != 200:
-                        _LOGGER.error(  # pylint: disable-next=line-too-long
-                            "An error reteiving data from the server, code: %s\nmessage: %s",  # noqa: E501
-                            response.status,
-                            message,
-                        )
-                        message = {"error": message}
-                    return message
+        except (TimeoutError, ServerTimeoutError):
+            _LOGGER.error("%s: %s", ERROR_TIMEOUT, url)
+            message = {"error": ERROR_TIMEOUT}
+        except ContentTypeError as err:
+            _LOGGER.error("%s", err)
+            message = {"error": err}
 
-            except (TimeoutError, ServerTimeoutError):
-                _LOGGER.error("%s: %s", ERROR_TIMEOUT, url)
-                message = {"error": ERROR_TIMEOUT}
-            except ContentTypeError as err:
-                _LOGGER.error("%s", err)
-                message = {"error": err}
-
-            await session.close()
-            return message
+        return message
 
     async def get_devices(self) -> dict:
         """Provide list of devices associated with account."""
