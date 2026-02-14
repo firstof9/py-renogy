@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import time
 import json
 import logging
+import time
 from typing import Any
 from urllib.parse import urlencode
 
@@ -110,7 +110,8 @@ class Renogy:
                     raise RateLimit
                 if response.status != 200:
                     _LOGGER.error(  # pylint: disable-next=line-too-long
-                        "An error retrieving data from the server, code: %s\nmessage: %s",
+                        "An error retrieving data from the server, code: %s\n"
+                        "message: %s",
                         response.status,
                         message,
                     )

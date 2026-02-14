@@ -2,11 +2,11 @@
 
 import json
 import logging
-
-import pytest
-import aiohttp
-from aiohttp.client_exceptions import ServerTimeoutError, ContentTypeError
 from unittest.mock import MagicMock
+
+import aiohttp
+import pytest
+from aiohttp.client_exceptions import ContentTypeError, ServerTimeoutError
 
 import renogyapi
 from renogyapi.exceptions import NoDevices, NotAuthorized, RateLimit, UrlNotFound
