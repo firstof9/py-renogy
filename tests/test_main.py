@@ -270,3 +270,5 @@ async def test_process_request_content_type_error(mock_aioclient):
     )
     resp = await handler.process_request(BASE_URL + "/contenttype", {})
     assert "error" in resp
+    assert isinstance(resp["error"], str)
+    assert "ContentTypeError" in resp["error"]

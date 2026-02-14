@@ -124,7 +124,7 @@ class Renogy:
             message = {"error": ERROR_TIMEOUT}
         except ContentTypeError as err:
             _LOGGER.error("%s", err)
-            message = {"error": err}
+            message = {"error": f"{err.__class__.__name__}: {err}"}
 
         return message
 
