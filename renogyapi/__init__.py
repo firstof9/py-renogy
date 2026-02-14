@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import time
@@ -118,8 +119,7 @@ class Renogy:
                     if not isinstance(message, dict) or "error" not in message:
                         message = {"error": message}
                 return message
-
-        except (TimeoutError, ServerTimeoutError):
+        except (TimeoutError, asyncio.TimeoutError, ServerTimeoutError):
             _LOGGER.error("%s: %s", ERROR_TIMEOUT, url)
             message = {"error": ERROR_TIMEOUT}
         except ContentTypeError as err:
