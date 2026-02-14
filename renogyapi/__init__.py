@@ -110,7 +110,7 @@ class Renogy:
                     raise RateLimit
                 if response.status != 200:
                     _LOGGER.error(  # pylint: disable-next=line-too-long
-                        "An error reteiving data from the server, code: %s\nmessage: %s",  # noqa: E501
+                        "An error retrieving data from the server, code: %s\nmessage: %s",
                         response.status,
                         message,
                     )
