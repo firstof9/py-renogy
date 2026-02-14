@@ -1,4 +1,4 @@
-"""Main librbary functions for py_renogy."""
+"""Main library functions for py_renogy."""
 
 from __future__ import annotations
 
@@ -197,7 +197,7 @@ class Renogy:
         return self._device_list
 
     async def get_realtime_data(self, device_id: str) -> dict:
-        """Provide reatime data of specified device_id."""
+        """Provide realtime data of specified device_id."""
         timestamp = int(time.time() * 1000)
         path = f"/device/data/latest/{device_id}"
         params: dict[Any, Any] = {}
