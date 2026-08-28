@@ -118,7 +118,7 @@ class Renogy:
                     if not isinstance(message, dict) or "error" not in message:
                         message = {"error": message}
                 return message
-        except (TimeoutError, ServerTimeoutError):
+        except TimeoutError, ServerTimeoutError:
             _LOGGER.error("%s: %s", ERROR_TIMEOUT, url)
             message = {"error": ERROR_TIMEOUT}
         except ContentTypeError as err:
@@ -169,7 +169,7 @@ class Renogy:
                     subdevices = response["sublist"]
                     try:
                         length = len(subdevices[0])
-                    except (TypeError, IndexError):
+                    except TypeError, IndexError:
                         length = 0
                         _LOGGER.warning("No subdevices found.")
                     if length > 0:
