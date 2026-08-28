@@ -38,6 +38,7 @@ The test suite uses the `mock_aioclient` fixture to intercept `aiohttp.ClientSes
 ```python
 from tests.common import load_fixture
 
+
 async def test_endpoint(mock_aioclient):
     # Queue a mocked GET response
     mock_aioclient.get(
@@ -58,10 +59,11 @@ async def test_endpoint(mock_aioclient):
 from aiohttp.client_exceptions import ServerTimeoutError
 from renogyapi.exceptions import NotAuthorized, UrlNotFound
 
+
 async def test_errors(mock_aioclient):
     # Status error
     mock_aioclient.get("https://openapi.renogy.com/401", status=401)
-    
+
     # Exception simulation (timeout)
     mock_aioclient.get(
         "https://openapi.renogy.com/timeout",
