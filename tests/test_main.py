@@ -1,6 +1,5 @@
 """Library tests."""
 
-import json
 import logging
 from unittest.mock import MagicMock
 
