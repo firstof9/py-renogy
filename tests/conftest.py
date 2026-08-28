@@ -1,14 +1,16 @@
 """Provide common pytest fixtures."""
 
+from __future__ import annotations
+
+import json
 from collections import defaultdict
 from collections.abc import Generator
-import json
 from typing import Any
 from unittest.mock import patch
 
 import aiohttp
-from multidict import CIMultiDict, CIMultiDictProxy
 import pytest
+from multidict import CIMultiDict, CIMultiDictProxy
 from yarl import URL
 
 
@@ -98,7 +100,7 @@ class MockClientResponse:
         """Return body parsed as JSON."""
         return loads(self._body_bytes.decode(encoding))
 
-    async def __aenter__(self) -> "MockClientResponse":
+    async def __aenter__(self) -> MockClientResponse:
         """Enter response context manager."""
         return self
 
@@ -172,7 +174,7 @@ class AiohttpClientMock:
             )
         )
 
-    def __enter__(self) -> "AiohttpClientMock":
+    def __enter__(self) -> AiohttpClientMock:
         """Enter client mock context manager patching ClientSession._request."""
         patcher = patch.object(aiohttp.ClientSession, "_request", new=self._request)
         patcher.start()
@@ -245,7 +247,7 @@ class AiohttpClientMock:
 
 
 @pytest.fixture
-def mock_aioclient() -> Generator[AiohttpClientMock, None, None]:
+def mock_aioclient() -> Generator[AiohttpClientMock]:
     """Fixture to mock aioclient calls."""
     with AiohttpClientMock() as m:
         yield m
