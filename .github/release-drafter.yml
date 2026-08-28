@@ -1,8 +1,24 @@
+name-template: "$RESOLVED_VERSION"
+tag-template: "$RESOLVED_VERSION"
 change-template: "- #$NUMBER - $TITLE (@$AUTHOR)"
+sort-direction: ascending
 categories:
+  # 1. Version Resolver Categories (New Schema)
+  - type: "version-resolver"
+    when:
+      labels:
+        - "breaking change"
+    semver-increment: "major"
+
+  - type: "version-resolver"
+    semver-increment: "patch" # Default fallback
+
+  # 2. Changelog Grouping Categories (Updated 'when' syntax)
   - title: "⚠ Breaking Changes"
-    labels:
-      - "breaking change"
+    when:
+      labels:
+        - "breaking change"
+
 template: |
-  ## What’s Changed
+  ## What's Changed
   $CHANGES
