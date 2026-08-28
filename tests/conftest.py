@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-import json
 from collections import defaultdict
 from collections.abc import Generator
+import json
 from typing import Any
 from unittest.mock import patch
 
 import aiohttp
-import pytest
 from multidict import CIMultiDict, CIMultiDictProxy
+import pytest
 from yarl import URL
 
 
